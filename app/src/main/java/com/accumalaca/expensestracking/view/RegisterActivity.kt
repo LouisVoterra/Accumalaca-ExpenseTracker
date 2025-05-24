@@ -1,5 +1,6 @@
 package com.accumalaca.expensestracking.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -39,9 +40,13 @@ class RegisterActivity : AppCompatActivity() {
             viewModel.registerUser(user) { success, msg ->
                 runOnUiThread {
                     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-                    if (success) finish() // balikin ke Login
+                    if (success) finish() // balik ke Login
                 }
             }
+        }
+
+        binding.txtLogin.setOnClickListener {
+            finish()
         }
     }
 }
