@@ -63,6 +63,7 @@ dependencies {
     // Room Database
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.common.jvm)
     kapt(libs.androidx.room.compiler)
 
     // Kotlin Coroutines
