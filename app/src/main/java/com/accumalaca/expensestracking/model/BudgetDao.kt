@@ -1,10 +1,12 @@
 package com.accumalaca.expensestracking.model
 
+import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
+@Dao
 interface BudgetDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg budgets :Budget)

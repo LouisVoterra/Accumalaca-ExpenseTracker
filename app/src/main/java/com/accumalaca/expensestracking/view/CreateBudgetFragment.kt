@@ -5,22 +5,43 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.accumalaca.expensestracking.R
+import com.accumalaca.expensestracking.databinding.FragmentCreateBudgetBinding
+import com.accumalaca.expensestracking.model.Budget
+import com.accumalaca.expensestracking.viewmodel.DetailBudgetViewModel
+import com.accumalaca.expensestracking.viewmodel.ListBudgetViewModel
 
 
 class CreateBudgetFragment : Fragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var binding:FragmentCreateBudgetBinding
+    private lateinit var viewModel: DetailBudgetViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_budget, container, false)
+        binding = FragmentCreateBudgetBinding.inflate(inflater,container,false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(DetailBudgetViewModel::class.java)
+
+        binding.btnAdd.setOnClickListener{
+            var budget = Budget(
+                binding.txtNama.text.toString(),
+                binding.txtNominal.text.toString().toInt()
+            )
+            val list = listOf(budget)
+            viewModel.addBudget(list)
+            Toast.makeText(view.context, "Data berhasil ditambahkan", Toast.LENGTH_LONG).show()
+            Navigation.findNavController(it).popBackStack()
+
+        }
     }
 
 

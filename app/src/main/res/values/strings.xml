@@ -2,4 +2,22 @@
     <string name="app_name">ExpensesTracking</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--this is for CreateBudgetFragment-->
+    <string name="title">New Budget</string>
+    <string name="name">Budget Name</string>
+    <string name="nominal">$     Nominal</string>
+    <string name="button">ADD BUDGET</string>
+
+    <!--For bottom_nav    -->
+    <string name="expense">Expense</string>
+    <string name="budget">Budgeting</string>
+    <string name="report">Report</string>
+    <string name="profile">Profile</string>
+
+    <!--For budget_item_layout -->
+    <string name="title_budget_item">Budgeting</string>
+
+    <!-- For fragmentbudgetlist xml -->
+    <string name="text_error">txtView</string>
 </resources>

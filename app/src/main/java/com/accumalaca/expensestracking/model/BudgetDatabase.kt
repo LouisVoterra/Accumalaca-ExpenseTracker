@@ -6,30 +6,31 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import java.util.concurrent.locks.Lock
 
-class BudgetDatabase {
-    @Database(entities = arrayOf(Budget::class), version = 1)
-    abstract class BudgetDatabase:RoomDatabase(){
-        abstract fun budgetDao(): BudgetDao
 
-        companion object{
-            @Volatile private var instance: BudgetDatabase ?= null
-            private val LOCK = Any()
+@Database(entities = arrayOf(Budget::class), version = 1)   //ngasi tau room tabel DB dgn versi 1
+abstract class BudgetDatabase:RoomDatabase(){  //kan kita bikin class BudgetDatabase untuk room ya, otomatis hrs mewarisi RoomDatabase()
+    abstract fun budgetDao(): BudgetDao //ngasi tau Room DAO apa yg hrs di link
 
-            fun buildDatabase(context:Context) =
-                Room.databaseBuilder(
-                    context.applicationContext,
-                    BudgetDatabase::class.java,
-                    "budgetdb").build()
+    //kata gpt room itu hrs singleton, karena kalai bikin 2 instance dlm 1 apps bisa bikin boros memory, error concurrenct & data corruption makanya dikasi @Violate + synchronize
+    companion object{ //static block ala kotlin
+        @Volatile private var instance: BudgetDatabase ?= null  //jaga jaga supaya thread lain bisa lihat instance terbaru
+        private val LOCK = Any() //object kunci agar synchronized aman di multi-thread
 
-            operator fun invoke(context: Context){
-                if(instance == null){
-                    synchronized(LOCK){
-                        instance ?: buildDatabase(context).also{
-                            instance = it
-                        }
+        fun buildDatabase(context:Context) =
+            Room.databaseBuilder( //bikin instance DB
+                context.applicationContext, //menghindari memory leak
+                BudgetDatabase::class.java,
+                "budgetdb").build() //nama sqlite di storage app
+
+        operator fun invoke(context: Context){  //bikin class utk dipanggil
+            if(instance == null){
+                synchronized(LOCK){
+                    instance ?: buildDatabase(context).also{
+                        instance = it
                     }
                 }
             }
         }
     }
+
 }
