@@ -20,4 +20,12 @@
 
     <!-- For fragmentbudgetlist xml -->
     <string name="text_error">txtView</string>
+
+    <!-- for Fragment_profile.xml    -->
+    <string name="profile_title">Profile</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="repeat_password">Repeat Password</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="change_password">Change Password</string>
 </resources>

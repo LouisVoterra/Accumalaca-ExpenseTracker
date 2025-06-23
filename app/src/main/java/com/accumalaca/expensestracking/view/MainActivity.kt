@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.accumalaca.expensestracking.databinding.ActivityMainBinding
 import com.accumalaca.expensestracking.util.SessionManager
@@ -30,15 +29,9 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-//        binding.txtWelcome.text = "Halo, $username!"
-//        binding.btnLogout.setOnClickListener {
-//            session.clearSession()
-//            startActivity(Intent(this, LoginActivity::class.java))
-//            finish()
-//        }
+
 
         navController = (supportFragmentManager.findFragmentById(R.id.hostFragment) as NavHostFragment).navController
-//        NavigationUI.setupActionBarWithNavController(this,navController)
 
         binding.bottomNav.setupWithNavController(navController)
 

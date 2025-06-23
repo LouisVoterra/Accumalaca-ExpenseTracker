@@ -32,6 +32,29 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun updateUser(username: String, oldPassword: String, newPassword: String, onResult: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            val user = withContext(Dispatchers.IO) {
+                userDao.getUser(username)
+            }
+
+            if (user == null) {
+                onResult(false, "Username tidak ditemukan")
+            } else if (user.password != oldPassword) {
+                onResult(false, "Password lama salah")
+            } else {
+                val rows = withContext(Dispatchers.IO) {
+                    userDao.updateUser(username, newPassword)
+                }
+                if (rows > 0) {
+                    onResult(true, "Password berhasil diupdate")
+                } else {
+                    onResult(false, "Gagal update password")
+                }
+            }
+        }
+    }
+
     // buat login
     fun loginUser(username: String, password: String, onResult: (Boolean, String) -> Unit) {
         viewModelScope.launch {
