@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import java.util.concurrent.locks.Lock
+
 
 
 @Database(entities = arrayOf(Budget::class), version = 1)   //ngasi tau room tabel DB dgn versi 1
