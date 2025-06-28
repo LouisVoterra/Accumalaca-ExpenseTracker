@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface BudgetDao {
@@ -19,6 +20,9 @@ interface BudgetDao {
 
     @Delete
     fun deleteBudget(budget: Budget)
+
+    @Query("UPDATE budget SET budgetName=:budgetName, nominals=:nominal WHERE uuid = :id")
+    fun updateBudget(budgetName: String, nominal: Int, id: Int)
 
 
 }

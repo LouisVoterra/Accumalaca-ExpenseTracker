@@ -2,6 +2,7 @@ package com.accumalaca.expensestracking.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.accumalaca.expensestracking.databinding.BudgetItemLayoutBinding
 import com.accumalaca.expensestracking.model.Budget
@@ -23,6 +24,11 @@ class BudgetListAdapter(val budgetList: ArrayList<Budget>)
     override fun onBindViewHolder(holder: BudgetViewHolder, position: Int) {
         holder.binding.txtNameTemp.text = budgetList[position].budgetName
         holder.binding.txtNominalTemp.text = budgetList[position].nominal.toString()
+
+        holder.binding.txtNameTemp.setOnClickListener{
+            val action = BudgetListFragmentDirections.actionEditBudget(budgetList[position].uuid)
+            Navigation.findNavController(it).navigate(action)
+        }
     }
 
     fun updateBudgetList(newBudgetList: List<Budget>){

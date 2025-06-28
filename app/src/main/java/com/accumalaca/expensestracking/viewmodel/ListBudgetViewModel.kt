@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.accumalaca.expensestracking.model.Budget
 import com.accumalaca.expensestracking.model.BudgetDatabase
+import com.accumalaca.expensestracking.util.buildDB
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,9 +26,11 @@ class ListBudgetViewModel(application: Application) :AndroidViewModel(applicatio
         loadingLD.value = true
         budgetLoadErrorLD.value = true
         launch {
-            val db = BudgetDatabase.buildDatabase(
-                getApplication()
-            )
+//            val db = BudgetDatabase.buildDatabase(
+//                getApplication()
+//            )
+
+            val db = buildDB(getApplication())
 
             budgetLD.postValue(db.budgetDao().selectAllBudget())
             loadingLD.postValue(false)

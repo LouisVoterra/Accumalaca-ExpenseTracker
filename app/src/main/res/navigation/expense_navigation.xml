@@ -20,6 +20,9 @@
             app:destination="@id/createBudgetFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/actionEditBudget"
+            app:destination="@id/editBudgetFragment" />
     </fragment>
     <fragment
         android:id="@+id/createBudgetFragment"
@@ -36,4 +39,13 @@
         android:name="com.accumalaca.expensestracking.view.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/editBudgetFragment"
+        android:name="com.accumalaca.expensestracking.view.EditBudgetFragment"
+        android:label="fragment_edit_budget"
+        tools:layout="@layout/fragment_edit_budget" >
+        <argument
+            android:name="uuid"
+            app:argType="integer" />
+    </fragment>
 </navigation>

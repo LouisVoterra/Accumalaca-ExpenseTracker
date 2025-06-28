@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.accumalaca.expensestracking.util.DB_NAME
+
+
 
 
 
@@ -20,7 +23,7 @@ abstract class BudgetDatabase:RoomDatabase(){  //kan kita bikin class BudgetData
             Room.databaseBuilder( //bikin instance DB
                 context.applicationContext, //menghindari memory leak
                 BudgetDatabase::class.java,
-                "budgetdb").build() //nama sqlite di storage app
+                DB_NAME).build() //nama sqlite di storage app
 
         operator fun invoke(context: Context){  //bikin class utk dipanggil
             if(instance == null){

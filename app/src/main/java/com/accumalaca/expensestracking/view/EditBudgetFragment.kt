@@ -6,36 +6,60 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
-import com.accumalaca.expensestracking.databinding.FragmentCreateBudgetBinding
-import com.accumalaca.expensestracking.model.Budget
+import com.accumalaca.expensestracking.databinding.FragmentEditBudgetBinding
 import com.accumalaca.expensestracking.viewmodel.DetailBudgetViewModel
 
 
-class CreateBudgetFragment : Fragment() {
-    private lateinit var binding:FragmentCreateBudgetBinding
+class EditBudgetFragment : Fragment() {
+    private lateinit var binding : FragmentEditBudgetBinding
     private lateinit var viewModel: DetailBudgetViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentCreateBudgetBinding.inflate(inflater,container,false)
+        // Inflate the layout for this fragment
+        binding = FragmentEditBudgetBinding.inflate(inflater,container,false)
+
+
         return binding.root
+    }
+
+    fun observeViewModel() {
+        viewModel.budgetLD.observe(viewLifecycleOwner, Observer {
+            binding.txtNama.setText(it.budgetName)
+            binding.txtNominal.setText(it.nominal.toString())
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //inisialisasi viewModel
+
         viewModel = ViewModelProvider(this).get(DetailBudgetViewModel::class.java)
 
-        val namaBudget = binding.txtNama.text.toString()
-        val nominal = binding.txtNominal.text.toString().toInt()
+        binding.textView.text = "Edit Budget"
+        binding.btnAdd.text = "Save Changes"
 
-        binding.btnAdd.setOnClickListener{
-            var budget = Budget(
-                namaBudget,nominal
-            )
+        val uuid = EditBudgetFragmentArgs.fromBundle(requireArguments()).uuid
+
+        viewModel.fetch(uuid)
+
+        observeViewModel()
+
+
+
+        binding.btnAdd.setOnClickListener {
+
+            val namaBudget = binding.txtNama.text.toString()
+            //btw toInt() ni agak galak cuy, kalau null langsung di force close
+            val nominalStr = binding.txtNominal.text.toString()
+            val nominal = nominalStr.toIntOrNull() //nah ini kalo misal null ga sampe di force close
+
 
             if (namaBudget.isBlank()){
                 Toast.makeText(requireContext(), "Silakan isi nama budget, jangan males", Toast.LENGTH_SHORT).show()
@@ -52,13 +76,13 @@ class CreateBudgetFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val list = listOf(budget)
-            viewModel.addBudget(list)
-            Toast.makeText(view.context, "Data berhasil ditambahkan", Toast.LENGTH_LONG).show()
-            Navigation.findNavController(it).popBackStack()
+            viewModel.updateBudget(namaBudget, nominal, uuid)
 
+            Toast.makeText(view.context,"Berhasil update budget", Toast.LENGTH_SHORT).show()
+            Navigation.findNavController(it).popBackStack()
         }
     }
+
 
 
 }
