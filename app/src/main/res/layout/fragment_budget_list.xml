@@ -25,16 +25,6 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="120dp"
-        android:clickable="true"
-        android:src="@drawable/outline_add_24" />
-
     <TextView
         android:id="@+id/txtError"
         android:layout_width="wrap_content"
@@ -48,4 +38,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnFabBudget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="45dp"
+        android:layout_marginBottom="150dp"
+        android:clickable="true"
+        android:src="@drawable/outline_add_24" />
 </FrameLayout>

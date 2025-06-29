@@ -42,12 +42,14 @@ class EditBudgetFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(DetailBudgetViewModel::class.java)
 
-        binding.textView.text = "Edit Budget"
-        binding.btnAdd.text = "Save Changes"
+        binding.textView.text = "Edit Budget"  //buat ngubah value dari textView sebelumnya dari sisi UI
+        binding.btnAdd.text = "Save Changes" //buat ngubah value dari textView sebelumnya dari sisi UI
 
+        //Mengambil argumen(data) yang dikirim ke fragment dengan cara yang aman
         val uuid = EditBudgetFragmentArgs.fromBundle(requireArguments()).uuid
 
-        viewModel.fetch(uuid)
+
+        viewModel.fetch(uuid) //manggil method fetch dari viewModel
 
         observeViewModel()
 

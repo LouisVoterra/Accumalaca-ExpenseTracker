@@ -9,7 +9,11 @@
         android:id="@+id/itemExpense"
         android:name="com.accumalaca.expensestracking.view.ExpenseListFragment"
         android:label="fragment_expense_list"
-        tools:layout="@layout/fragment_expense_list" />
+        tools:layout="@layout/fragment_expense_list" >
+        <action
+            android:id="@+id/actionCreateExpense"
+            app:destination="@id/createExpenseFragment" />
+    </fragment>
     <fragment
         android:id="@+id/itemBudget"
         android:name="com.accumalaca.expensestracking.view.BudgetListFragment"
@@ -48,4 +52,9 @@
             android:name="uuid"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/createExpenseFragment"
+        android:name="com.accumalaca.expensestracking.view.CreateExpenseFragment"
+        android:label="fragment_create_expense"
+        tools:layout="@layout/fragment_create_expense" />
 </navigation>

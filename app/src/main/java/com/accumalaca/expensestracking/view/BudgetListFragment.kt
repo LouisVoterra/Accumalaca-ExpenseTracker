@@ -35,7 +35,8 @@ class BudgetListFragment : Fragment() {
         binding.recViewBudget.layoutManager = LinearLayoutManager(context)
         binding.recViewBudget.adapter = budgetListAdapter
 
-        binding.btnFab.setOnClickListener{
+
+        binding.btnFabBudget.setOnClickListener {
             val action = BudgetListFragmentDirections.actionCreateBudget()
             Navigation.findNavController(it).navigate(action)
         }

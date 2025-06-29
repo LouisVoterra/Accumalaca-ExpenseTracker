@@ -29,13 +29,11 @@ class CreateBudgetFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(DetailBudgetViewModel::class.java)
 
-        val namaBudget = binding.txtNama.text.toString()
-        val nominal = binding.txtNominal.text.toString().toInt()
-
         binding.btnAdd.setOnClickListener{
-            var budget = Budget(
-                namaBudget,nominal
-            )
+
+            val namaBudget = binding.txtNama.text.toString()
+            val nominalStr = binding.txtNominal.text.toString()
+            val nominal = nominalStr.toIntOrNull()
 
             if (namaBudget.isBlank()){
                 Toast.makeText(requireContext(), "Silakan isi nama budget, jangan males", Toast.LENGTH_SHORT).show()
@@ -51,6 +49,10 @@ class CreateBudgetFragment : Fragment() {
                 Toast.makeText(requireContext(), "ngutang kah anda kok sampe minus", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            var budget = Budget(
+                namaBudget, nominal
+            )
 
             val list = listOf(budget)
             viewModel.addBudget(list)
