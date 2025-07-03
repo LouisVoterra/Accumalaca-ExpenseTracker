@@ -6,9 +6,14 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.accumalaca.expensestracking.databinding.BudgetItemLayoutBinding
 import com.accumalaca.expensestracking.model.Budget
+import com.accumalaca.expensestracking.viewmodel.ListBudgetViewModel
 
 class BudgetListAdapter(val budgetList: ArrayList<Budget>)
     :RecyclerView.Adapter<BudgetListAdapter.BudgetViewHolder>(){
+
+    var viewModel: ListBudgetViewModel? = null// tadi kan nda ada, tinggal tambah properti ini
+
+
     class BudgetViewHolder(var binding: BudgetItemLayoutBinding):
             RecyclerView.ViewHolder(binding.root)
 
@@ -25,10 +30,11 @@ class BudgetListAdapter(val budgetList: ArrayList<Budget>)
         holder.binding.txtNameTemp.text = budgetList[position].budgetName
         holder.binding.txtNominalTemp.text = budgetList[position].nominal.toString()
 
-        holder.binding.txtNameTemp.setOnClickListener{
+        holder.itemView.setOnClickListener { // knp ganti? kau masang listener setOnClickListener ke txtNameTemp, bukan ke seluruh card atau item.
             val action = BudgetListFragmentDirections.actionEditBudget(budgetList[position].uuid)
             Navigation.findNavController(it).navigate(action)
         }
+
     }
 
     fun updateBudgetList(newBudgetList: List<Budget>){

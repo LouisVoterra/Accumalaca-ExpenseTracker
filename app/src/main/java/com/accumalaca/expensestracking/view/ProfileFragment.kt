@@ -32,6 +32,15 @@ class ProfileFragment : Fragment() {
         session = SessionManager(requireContext())
 
 
+        //cuma buat biar tau ini akun siapa si, biar gampang testingya
+        val username = session.getLoggedInUser()
+        binding.txtWelcomeUser.text = if (username != null) {
+            "Selamat datang, @$username"
+        } else {
+            "Selamat datang!"
+        }
+
+
         binding.btnSignOut.setOnClickListener{
             session.clearSession()
             startActivity(Intent(requireContext(), LoginActivity::class.java))

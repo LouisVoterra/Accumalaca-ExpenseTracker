@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.accumalaca.expensestracking.R
 import com.accumalaca.expensestracking.databinding.FragmentBudgetListBinding
+import com.accumalaca.expensestracking.util.SessionManager
 import com.accumalaca.expensestracking.viewmodel.ListBudgetViewModel
 
 
@@ -22,8 +23,8 @@ class BudgetListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentBudgetListBinding.inflate(inflater,container,false)
+    ): View {
+        binding = FragmentBudgetListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -31,10 +32,21 @@ class BudgetListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this).get(ListBudgetViewModel::class.java)
-        viewModel.refresh()
-        binding.recViewBudget.layoutManager = LinearLayoutManager(context)
-        binding.recViewBudget.adapter = budgetListAdapter
 
+
+
+        // Ambil username dari SessionManager
+        val username = SessionManager(requireContext()).getLoggedInUser()
+        if (username != null) {
+            viewModel.refresh()  // Panggil refresh dengan username
+        }
+
+        budgetListAdapter.viewModel = viewModel  // set ViewModel ke Adapter
+
+        binding.recViewBudget.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = budgetListAdapter
+        }
 
         binding.btnFabBudget.setOnClickListener {
             val action = BudgetListFragmentDirections.actionCreateBudget()
@@ -48,11 +60,11 @@ class BudgetListFragment : Fragment() {
 
         viewModel.budgetLD.observe(viewLifecycleOwner, Observer {
             budgetListAdapter.updateBudgetList(it)
-            if(it.isEmpty()){
-                binding.recViewBudget?.visibility = View.GONE
-                binding.txtError.setText("Your budget still Empty.")
-            }else{
-                binding.recViewBudget?.visibility = View.VISIBLE
+
+            if (it.isEmpty()) {
+                binding.txtError.visibility = View.VISIBLE
+            } else {
+                binding.txtError.visibility = View.GONE
             }
         })
 

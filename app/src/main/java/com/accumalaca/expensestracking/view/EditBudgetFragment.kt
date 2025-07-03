@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.accumalaca.expensestracking.R
 import com.accumalaca.expensestracking.databinding.FragmentEditBudgetBinding
 import com.accumalaca.expensestracking.viewmodel.DetailBudgetViewModel
 
@@ -42,8 +44,12 @@ class EditBudgetFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(DetailBudgetViewModel::class.java)
 
-        binding.textView.text = "Edit Budget"  //buat ngubah value dari textView sebelumnya dari sisi UI
-        binding.btnAdd.text = "Save Changes" //buat ngubah value dari textView sebelumnya dari sisi UI
+       // binding.textView.text = "Edit Budget"  //buat ngubah value dari textView sebelumnya dari sisi UI
+       // binding.btnAdd.text = "Save Changes" //buat ngubah value dari textView sebelumnya dari sisi UI
+
+        binding.textView.setText(R.string.edit_budget)
+        binding.btnAdd.setText(R.string.save_changes)
+        //g beda jauh, konsitesi doang
 
         //Mengambil argumen(data) yang dikirim ke fragment dengan cara yang aman
         val uuid = EditBudgetFragmentArgs.fromBundle(requireArguments()).uuid
@@ -81,7 +87,20 @@ class EditBudgetFragment : Fragment() {
             viewModel.updateBudget(namaBudget, nominal, uuid)
 
             Toast.makeText(view.context,"Berhasil update budget", Toast.LENGTH_SHORT).show()
-            Navigation.findNavController(it).popBackStack()
+
+
+            // Kembali ke fragment sebelumnya
+            Navigation.findNavController(requireView()).popBackStack()
+        }
+
+        // Tombol back manual
+        binding.btnBack?.setOnClickListener {
+            Navigation.findNavController(requireView()).popBackStack()
+        }
+
+        // Tombol back bawaan HP
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            Navigation.findNavController(requireView()).popBackStack()
         }
     }
 

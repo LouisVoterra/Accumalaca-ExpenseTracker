@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.accumalaca.expensestracking.databinding.FragmentCreateBudgetBinding
 import com.accumalaca.expensestracking.model.Budget
+import com.accumalaca.expensestracking.util.SessionManager
 import com.accumalaca.expensestracking.viewmodel.DetailBudgetViewModel
 
 
@@ -25,15 +27,25 @@ class CreateBudgetFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(DetailBudgetViewModel::class.java)
 
+
+
         binding.btnAdd.setOnClickListener{
+
+            val username = SessionManager(requireContext()).getLoggedInUser()//inisiasi
 
             val namaBudget = binding.txtNama.text.toString()
             val nominalStr = binding.txtNominal.text.toString()
             val nominal = nominalStr.toIntOrNull()
+
+            if (username == null) {
+                Toast.makeText(requireContext(), "User tidak ditemukan", Toast.LENGTH_SHORT).show() //pengecekan username
+                return@setOnClickListener
+            }
 
             if (namaBudget.isBlank()){
                 Toast.makeText(requireContext(), "Silakan isi nama budget, jangan males", Toast.LENGTH_SHORT).show()
@@ -50,15 +62,24 @@ class CreateBudgetFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            var budget = Budget(
-                namaBudget, nominal
-            )
+            val budget = Budget(namaBudget, nominal, username) // tambah username
 
             val list = listOf(budget)
-            viewModel.addBudget(list)
+            viewModel.addBudget(budget) //diganti ya, karena nerimanya 1 pe4satu bukan list/batch
             Toast.makeText(view.context, "Data berhasil ditambahkan", Toast.LENGTH_LONG).show()
-            Navigation.findNavController(it).popBackStack()
 
+            // Kembali ke fragment sebelumnya
+            Navigation.findNavController(requireView()).popBackStack()
+        }
+
+        // Tombol back manual
+        binding.btnBack?.setOnClickListener {
+            Navigation.findNavController(requireView()).popBackStack()
+        }
+
+        // Tombol back bawaan HP
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            Navigation.findNavController(requireView()).popBackStack()
         }
     }
 

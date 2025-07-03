@@ -9,19 +9,18 @@ import androidx.room.Query
 @Dao
 interface BudgetDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg budgets :Budget)
+    suspend fun insertAll(vararg budgets :Budget)
 
-    @Query("SELECT * FROM budget")
-    fun selectAllBudget(): List<Budget>
+    @Query("SELECT * FROM budget WHERE username = :user") //gant ini ya
+    suspend fun selectAllBudget(user: String): List<Budget>
 
-    @Query("SELECT * FROM budget WHERE uuid= :id")
-    fun selectBudget(id: Int):Budget
+    @Query("SELECT * FROM budget WHERE uuid = :id")
+    suspend fun selectBudget(id: Int): Budget
+
+    @Query("UPDATE budget SET budgetName = :name, nominals = :nominal WHERE uuid = :id")
+    suspend fun updateBudget(name: String, nominal: Int, id: Int)
 
     @Delete
-    fun deleteBudget(budget: Budget)
-
-    @Query("UPDATE budget SET budgetName=:budgetName, nominals=:nominal WHERE uuid = :id")
-    fun updateBudget(budgetName: String, nominal: Int, id: Int)
-
+    suspend fun deleteBudget(budget: Budget)
 
 }

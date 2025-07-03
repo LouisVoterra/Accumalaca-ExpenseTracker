@@ -21,7 +21,14 @@ class LoginActivity : AppCompatActivity() {
 
         session = SessionManager(this)
 
-        session.getLoggedInUser()?.let {
+        //session.getLoggedInUser()?.let {
+            //goToMain()
+        //}
+
+        // kenapa ganti? cuma masttin SessionManager.getLoggedInUser() berfungsi
+        val loggedIn = session.getLoggedInUser()
+        if (loggedIn != null) {
+            Toast.makeText(this, "Sudah login sebagai: $loggedIn", Toast.LENGTH_SHORT).show()
             goToMain()
         }
 

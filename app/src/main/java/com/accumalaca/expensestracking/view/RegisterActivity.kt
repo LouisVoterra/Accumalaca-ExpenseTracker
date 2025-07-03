@@ -30,8 +30,9 @@ class RegisterActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (pw != repw) {
-                Toast.makeText(this, "Password gak cocok, kayak mantan kamu", Toast.LENGTH_SHORT).show()
+            //update validasi 6 huruf
+            if (pw.length < 6) {
+                Toast.makeText(this, "Password minimal 6 karakter, jangan pelit huruf", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -39,8 +40,9 @@ class RegisterActivity : AppCompatActivity() {
 
             viewModel.registerUser(user) { success, msg ->
                 runOnUiThread {
+                    android.util.Log.d("RegisterActivity", "Hasil registrasi: success=$success, pesan=$msg")
                     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-                    if (success) finish() // balik ke Login
+                    if (success) finish() //balik login
                 }
             }
         }

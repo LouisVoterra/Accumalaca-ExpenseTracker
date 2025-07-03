@@ -9,11 +9,16 @@ import androidx.room.PrimaryKey
 @Entity("budget")
 data class Budget(
 
-
     @ColumnInfo("budgetName")  //untuk var budgetName kita kasi nama budgetName sbg column di database
     var budgetName:String,
+
+
+
     @ColumnInfo("nominals") //untuk var nominals kita kasi nama nominals sbg column kedua di tabase
-    var nominal:Int
+    var nominal:Int,
+
+    @ColumnInfo("username")  // mas luis mas luis
+    var username: String
 ){
     @PrimaryKey(autoGenerate = true)
     var uuid:Int = 0

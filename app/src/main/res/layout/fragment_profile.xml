@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!--Inisialisasi variabel untuk data binding -->
         <variable
             name="user"
             type="com.accumalaca.expensestracking.model.User" />
@@ -20,6 +19,7 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputLayout
+                app:endIconMode="password_toggle"
                 android:id="@+id/textInputLayout4"
                 android:layout_width="373dp"
                 android:layout_height="61dp"
@@ -29,6 +29,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtTtitle">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:inputType="textPassword"
                     android:id="@+id/txtOldPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -36,6 +37,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                app:endIconMode="password_toggle"
                 android:id="@+id/textInputLayout5"
                 android:layout_width="372dp"
                 android:layout_height="62dp"
@@ -46,6 +48,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:inputType="textPassword"
                     android:id="@+id/txtNewPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -53,6 +56,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                app:endIconMode="password_toggle"
                 android:id="@+id/textInputLayout6"
                 android:layout_width="367dp"
                 android:layout_height="69dp"
@@ -62,11 +66,29 @@
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:inputType="textPassword"
                     android:id="@+id/txtRepeatPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/repeat_password" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/txtWelcomeUser"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/welcome_user"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/textInputLayout4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.081"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtTtitle"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="Selamat datang, @luis123" />
 
             <TextView
                 android:id="@+id/txtTtitle"
@@ -87,8 +109,11 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="32dp"
                 android:text="@string/sign_out"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@android:color/holo_red_dark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout6" />
+
 
             <Button
                 android:id="@+id/btnSave"
