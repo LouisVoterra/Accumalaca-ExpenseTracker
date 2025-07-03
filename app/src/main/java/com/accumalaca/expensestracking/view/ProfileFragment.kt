@@ -7,86 +7,72 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.accumalaca.expensestracking.R
 import com.accumalaca.expensestracking.databinding.FragmentProfileBinding
+import com.accumalaca.expensestracking.model.User
+import com.accumalaca.expensestracking.model.UserBinding
 import com.accumalaca.expensestracking.util.SessionManager
 import com.accumalaca.expensestracking.viewmodel.AuthViewModel
 
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), ProfileHandler {
+
     private lateinit var binding: FragmentProfileBinding
-    private lateinit var session: SessionManager //kita perlu panggil sessionManager dulu
+    private lateinit var session: SessionManager
     private lateinit var viewModel: AuthViewModel
+    private val user = UserBinding()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        binding = FragmentProfileBinding.inflate(inflater,container,false)
-        viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.user = user
+        binding.handler = this
 
-        //bikin object dari class SessionManager, tapi parameter bukan lagi pake this, karena ini fragment, jadi
-        //bisa pakai requireContext
         session = SessionManager(requireContext())
+        viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
 
-
-        //cuma buat biar tau ini akun siapa si, biar gampang testingya
-        val username = session.getLoggedInUser()
-        binding.txtWelcomeUser.text = if (username != null) {
-            "Selamat datang, @$username"
-        } else {
-            "Selamat datang!"
-        }
-
-
-        binding.btnSignOut.setOnClickListener{
-            session.clearSession()
-            startActivity(Intent(requireContext(), LoginActivity::class.java))
-            requireActivity().finish() //yang ini harus requireActivity biar bisa panggil finish()
-        }
-
-        binding.btnSave.setOnClickListener {
-            val old_password = binding.txtOldPassword.text.toString()
-            val new_password = binding.txtNewPassword.text.toString()
-            val repeat_password = binding.txtRepeatPassword.text.toString()
-
-            if (old_password.isBlank()){
-                Toast.makeText(requireContext(), "Silahkan mengisi kembali Old Password Anda", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (new_password.isBlank()){
-                Toast.makeText(requireContext(), "Silahkan mengisi kembali New Password Anda", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (repeat_password.isBlank()){
-                Toast.makeText(requireContext(), "Silahkan mengisi kembali Repeat Password Anda", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            if (new_password != repeat_password){
-                Toast.makeText(requireContext(), "Silahkan cocokkan kembali password Anda", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            val username = session.getLoggedInUser()
-
-            if (username == null) {
-                Toast.makeText(requireContext(), "ngetest", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            viewModel.updateUser(username,old_password,new_password) { success, message ->
-                requireActivity().runOnUiThread {
-                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+        val username = session.getLoggedInUser() ?: ""
+        user.username.set(username)
 
         return binding.root
     }
 
+    override fun onSignOutClick() {
+        session.clearSession()
+        startActivity(Intent(requireContext(), LoginActivity::class.java))
+        requireActivity().finish()
+    }
 
+    override fun onSaveClick() {
+        val old = user.oldPassword.get() ?: ""
+        val new = user.newPassword.get() ?: ""
+        val repeat = user.repeatPassword.get() ?: ""
+        val username = user.username.get() ?: ""
+
+        when {
+            old.isBlank() || new.isBlank() || repeat.isBlank() -> {
+                toast("Semua field harus diisi")
+                return
+            }
+            new != repeat -> {
+                toast("Password tidak cocok")
+                return
+            }
+        }
+
+        viewModel.updateUser(username, old, new) { success, message ->
+            requireActivity().runOnUiThread {
+                toast(message)
+            }
+        }
+    }
+
+    private fun toast(msg: String) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+    }
 }

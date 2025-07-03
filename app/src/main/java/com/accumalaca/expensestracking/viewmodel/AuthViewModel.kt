@@ -8,11 +8,23 @@ import com.accumalaca.expensestracking.model.UserDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.lifecycle.MutableLiveData
 
 // yang ngatur login dan daftar, bukan doi
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userDao = UserDatabase.getInstance(application).userDao()
+
+    val userData = MutableLiveData<User?>() //buat data binding
+
+    fun fetchUser(username: String) { //dipanggil di profile fragmen
+        viewModelScope.launch {
+            val user = withContext(Dispatchers.IO) {
+                userDao.getUser(username)
+            }
+            userData.postValue(user)
+        }
+    }
 
     // daftar akun
     fun registerUser(user: User, onResult: (Boolean, String) -> Unit) {
